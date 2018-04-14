@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Casino Sign In</title>
+</head>
+<body>
+  {% load static %}
+  <meta charset="UTF-8">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet prefetch'>
+  <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet prefetch'>
+  <link href="{% static 'login_page/css/style.css' %}" rel="stylesheet">
+
+
+  <div class="cotn_principal">
+    <div class="cont_centrar">
+      <div class="cont_login">
+        <div class="cont_info_log_sign_up">
+          <div class="col_md_login">
+            <div class="cont_ba_opcitiy">
+              <h2>LOGIN</h2>
+              <p>Please Login</p><button class="btn_login" onclick="cambiar_login()">LOGIN</button>
+            </div>
+          </div>
+          <div class="col_md_sign_up">
+            <div class="cont_ba_opcitiy">
+              <h2>SIGN UP</h2>
+              <p>Please Sign Up</p><button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+            </div>
+          </div>
+        </div>
+        <div class="cont_back_info">
+          <div class="cont_img_back_grey"><img alt="" src="https://images.unsplash.com/42/U7Fc1sy5SCUDIu4tlJY3_NY_by_PhilippHenzler_philmotion.de.jpg?ixlib=rb-0.3.5&q=50&fm=jpg&crop=entropy&s=7686972873678f32efaf2cd79671673d"></div>
+        </div>
+        <div class="cont_forms">
+          <div class="cont_img_back_"><img alt="" src="https://images.unsplash.com/42/U7Fc1sy5SCUDIu4tlJY3_NY_by_PhilippHenzler_philmotion.de.jpg?ixlib=rb-0.3.5&q=50&fm=jpg&crop=entropy&s=7686972873678f32efaf2cd79671673d"></div>
+
+
+
+          <div class="cont_form_login">
+            <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+            <h2>LOGIN</h2>
+            <form id="login_form" method="post" accept-charset="UTF-8">
+            {% csrf_token %}
+              <input placeholder="Phone" type="text" id="phone_login" name="phone_login">
+              <input placeholder="Password" type="password" id="pwd_login" name="pwd_login">
+              <button type="summit" class="btn_login" onclick="cambiar_login()">LOGIN</button>
+            </form>
+          </div>
+
+
+
+          <div class="cont_form_sign_up">
+            <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+            <h2>SIGN UP</h2>
+            <form id="signup_form" method="POST" accept-charset="UTF-8">
+            {% csrf_token %}
+                <input placeholder="Phone" type="text" id="phone_signup" name="phone_signup"> 
+                <input placeholder="User" type="text" id="user_signup" name="user_signup"> 
+                <input placeholder="Password" type="password" id="pwd_signup" name="pwd_signup"> 
+                <input placeholder="Confirm Password" type="password" id="pwd2_signup" name="pwd2_signup"> 
+                <button type="summit" class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{% static 'login_page/js/index.js' %}">
+  </script>
+
+  <script type="text/javascript">
+    {% if messages %}
+    {% for message in messages %}
+        alert( '{{message}}' )
+    {% endfor %}
+    {% endif %}
+  </script>
+</body>
+</html>
