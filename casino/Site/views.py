@@ -13,11 +13,15 @@ from hashlib import sha256
 
 import sys
 import os
+import requests
 
 
 @csrf_exempt
 def index( request ) :
-	return render( request, 'index.html')
+	if request.user.is_authenticated :
+		return render( request, 'index.html', { 'user_name': request.session['name'] } )
+	else :
+		return render( request, 'index.html' )
 
 
 
@@ -129,7 +133,8 @@ def login_register_page( request ) :
 		else :
 			print( 'not post')
 
-		return render( request, 'login.html')
+		
+		return render( request, 'login.html' )
 
 	except Exception as e :
 		exc_type, exc_obj, exc_tb = sys.exc_info()

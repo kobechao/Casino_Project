@@ -11,6 +11,8 @@
   <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet prefetch'>
   <link href="{% static 'login_page/css/style.css' %}" rel="stylesheet">
 
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+
 
   <div class="cotn_principal">
     <div class="cont_centrar">
@@ -43,7 +45,10 @@
             <form id="login_form" method="post" accept-charset="UTF-8">
             {% csrf_token %}
               <input placeholder="Phone" type="text" id="phone_login" name="phone_login">
-              <input placeholder="Password" type="password" id="pwd_login" name="pwd_login">
+              <input placeholder="Password" type="password" id="pwd_login" name="pwd_login" style="margin-bottom: 10px;">
+              
+              <div class="g-recaptcha" data-sitekey="6LcpRVMUAAAAALRoAEZ4bsknDNNbf7cM9e_HOIaw"></div>
+              
               <button type="summit" class="btn_login" onclick="cambiar_login()">LOGIN</button>
             </form>
           </div>
@@ -58,7 +63,10 @@
                 <input placeholder="Phone" type="text" id="phone_signup" name="phone_signup"> 
                 <input placeholder="User" type="text" id="user_signup" name="user_signup"> 
                 <input placeholder="Password" type="password" id="pwd_signup" name="pwd_signup"> 
-                <input placeholder="Confirm Password" type="password" id="pwd2_signup" name="pwd2_signup"> 
+                <input placeholder="Confirm Password" type="password" id="pwd2_signup" name="pwd2_signup" style="margin-bottom: 10px;">
+
+                <div class="g-recaptcha" data-sitekey="6LcpRVMUAAAAALRoAEZ4bsknDNNbf7cM9e_HOIaw"></div>
+
                 <button type="summit" class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
             </form>
           </div>
@@ -66,8 +74,8 @@
       </div>
     </div>
   </div>
-  <script src="{% static 'login_page/js/index.js' %}">
-  </script>
+
+  <script src="{% static 'login_page/js/index.js' %}"></script>
 
   <script type="text/javascript">
     {% if messages %}

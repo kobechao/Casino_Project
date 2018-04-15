@@ -3,6 +3,14 @@ import os
 import sys
 
 if __name__ == "__main__":
+
+    try :
+        if sys.version_info[0] < 3:
+            raise EnvironmentError('Must Use Python3')
+    except EnvironmentError as envErr :
+        print( str(envErr) )
+
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "casino.settings")
     try:
         from django.core.management import execute_from_command_line
