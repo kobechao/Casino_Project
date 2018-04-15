@@ -65,7 +65,7 @@ transition: all 0.5s;
 
 .cont_forms_active_login {
 box-shadow: 1px 10px 30px -10px rgba(0,0,0,0.5);
-  height: 500px;  
+  height: 550px;  
 top:20px;
 left: 0px;
   -webkit-transition: all 0.5s;
@@ -78,7 +78,7 @@ transition: all 0.5s;
 
 .cont_forms_active_sign_up {
 box-shadow: 1px 10px 30px -10px rgba(0,0,0,0.5);
-  height: 500px;  
+  height: 550px;  
 top:20px;
 left:320px;
 -webkit-transition: all 0.5s;
