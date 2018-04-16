@@ -26,14 +26,14 @@
 					<p>No pay, no gain<br />
 					</p>
 					{% else %}
-					<h1>Please Sign In To Use!</h1>
+					<h1>請先登入!</h1>
 					{% endif %}
 
 				</header>
 
 				<nav id="nav">
 					<ul>
-						<li><a href="#one" class="active">About</a></li>
+						<li><a href="#one" class="active">關於</a></li>
 
 						{% if request.user.is_authenticated %}
 						<li><a href="#introducer">Introducers</a></li>
@@ -41,14 +41,16 @@
 						<li><a href="#bet">Let's Go Bet!</a></li>
 						{% endif %}
 
-						<li><a href="#contact">Contact</a></li>
-						<li><a href="#incoming_1">Incoming...</a></li>
+						<li><a href="#contact">客服聯繫</a></li>
+						<li><a href="#incoming_1">下注用</a></li>
 						<li><a href="#incoming_2">Incoming...</a></li>
-
+						<!-- TEST -->
+						<li><a href="#historyList">詳細名單</a></li>
+						<!-- TEST -->
 						{% if not request.user.is_authenticated %}
-						<li><a href="/signin">Login</a></li>
+						<li><a href="/signin">點此登入</a></li>
 						{% else %}
-						<li><a href="/signout">LogOut</a></li>
+						<li><a href="/signout">點此登出</a></li>
 						{% endif %}
 					</ul>
 				</nav>
@@ -179,19 +181,30 @@
 
 							<section id="incoming_1">
 								<div class="container">
-									<h3>Incoming.....</h3>
-									<p>Pending</p>
+									<h3>下注用的地方</h3>
+									<p>組合1、下 / 不下  之類的</p>
 									
 								</div>
 							</section>
 
 							<section id="incoming_2">
 								<div class="container">
-									<h3>Incoming.....</h3>
-									<p>Pending</p>
+									<h3>下注用的地方</h3>
+									<p>組合2、下 / 不下  之類的</p>
 									
 								</div>
 							</section>
+						<!-- Five -->
+							<section id="five">
+								<div class="container">
+									<h2>詳細名單</h2>
+								</div>
+							</section>							
+
+
+
+
+
 
 						<!-- Five -->
 						<!--

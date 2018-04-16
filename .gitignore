@@ -16,3 +16,6 @@ venv/
 *.log
 local_settings.py
 db.sqlite3
+
+
+casino/casino/settings.py

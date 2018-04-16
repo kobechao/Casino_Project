@@ -80,10 +80,11 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'sqlserver_ado',
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Casino',
-        'USER': 'root',
-        'PASSWORD': 'tina1633',
-        'HOST': 'localhost',
+        'NAME': 'games',
+        'USER': 'mysql',
+        'PASSWORD': '85280129e10b4e02',
+        'HOST': '192.168.38.157',
+        'PORT': '8336',
         'OPTION': {
             'read_default_file': '/etc/mysql/my.cnf',
         },
