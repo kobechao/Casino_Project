@@ -96,7 +96,7 @@ def login_register_page( request ) :
 						Successed = False; Registered = False
 
 						try :
-							Login1.objects.get( account=email )
+							Login1.objects.get( account=phone )
 							Registered = True
 
 						except Exception as e :
