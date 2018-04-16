@@ -23,10 +23,10 @@
 
 					{% if request.user.is_authenticated %}
 					<h1 id="logo"><a href="#">{{ user_name }}</a></h1>
-					<p>No pay, no gain<br />
+					<p>Hello!<br />
 					</p>
 					{% else %}
-					<h1>請先登入!</h1>
+					<h1>請先登入!<br /><br /></h1>
 					{% endif %}
 
 				</header>
@@ -36,19 +36,13 @@
 						<li><a href="#one" class="active">關於</a></li>
 
 						{% if request.user.is_authenticated %}
-						<li><a href="#introducer">Introducers</a></li>
-						<li><a href="#history">History</a></li>
-						<li><a href="#bet">Let's Go Bet!</a></li>
+						<li><a href="#introducer">個人資訊</a></li>
+						<li><a href="#history">號碼相關</a></li>
+						<li><a href="#bet">詳細名單</a></li>
 						{% endif %}
-
 						<li><a href="#contact">客服聯繫</a></li>
-						<li><a href="#incoming_1">下注用</a></li>
-						<li><a href="#incoming_2">Incoming...</a></li>
-						<!-- TEST -->
-						<li><a href="#historyList">詳細名單</a></li>
-						<!-- TEST -->
 						{% if not request.user.is_authenticated %}
-						<li><a href="/signin">點此登入</a></li>
+						<li><a href="/signin">點此登入 / 註冊</a></li>
 						{% else %}
 						<li><a href="/signout">點此登出</a></li>
 						{% endif %}
@@ -75,11 +69,11 @@
 							<section id="one">
 								<div class="container">
 									<header class="major">
-										<h2>Casino</h2>
-										<p>Information System<br />
+										<h2>標題</h2>
+										<p>內文開頭123<br />
 										<!-- powered by <a href="http://html5up.net">HTML5 UP</a>.</p> -->
 									</header>
-									<p>2018/04</p>
+
 								</div>
 							</section>
 
@@ -87,8 +81,8 @@
 							{% if request.user.is_authenticated %}
 							<section id="introducer">
 								<div class="container">
-									<h3>Records of Introducers</h3>
-									<p>Records of Introducers</p>
+									<h3>個人資訊</h3>
+									<p>這邊會放個人資訊</br>現在餘額</br>目前底下人下注金額</br>目前獎金累積%數...</p>
 									<ul class="feature-icons">
 										<!-- <li class="fa-code">Pending</li>
 										<li class="fa-cubes">Pending</li>
@@ -105,28 +99,27 @@
 							{% if request.user.is_authenticated %}
 							<section id="history">
 								<div class="container">
-									<h3>History</h3>
-									<p>History</p>
+									<h3>號碼相關</h3>
 									<div class="features">
 										<article>
 											<a href="#" class="image"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></a>
 											<div class="inner">
-												<h4>Pending</h4>
-												<p>Pending</p>
+												<h4>莊家殺手</h4>
+												<p>這邊會有個連結連到歷史號碼</p>
 											</div>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></a>
 											<div class="inner">
-												<h4>Pending</h4>
-												<p>Pending</p>
+												<h4>組合1</h4>
+												<p>下注的按鈕</p>
 											</div>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></a>
 											<div class="inner">
-												<h4>Pending</h4>
-												<p>Pending</p>
+												<h4>組合2</h4>
+												<p>下注的按鈕</p>
 											</div>
 										</article>
 									</div>
@@ -137,21 +130,36 @@
 							{% if request.user.is_authenticated %}
 							<section id="bet">
 								<div class="container">
-									<h3>Let's Have a Bet!</h3>
-									<p>List of Available</p>
+									<h3>詳細名單</h3>
+									<p>這邊會放該有的名單訊息,ex:</br>日期、帳號、下注多少</p>
 									<ul class="feature-icons">
-										<li class="fa-code">Pending</li>
-										<li class="fa-cubes">Pending</li>
-										<li class="fa-book">Pending</li>
-										<li class="fa-coffee">Pending</li>
-										<li class="fa-bolt">Pending</li>
-										<li class="fa-users">Pending</li>
+										<li class="fa-code">先放著</li>
+										<li class="fa-cubes">先放著</li>
+										<li class="fa-book">先放著</li>
+										<li class="fa-coffee">先放著</li>
+										<li class="fa-bolt">先放著</li>
+										<li class="fa-users">先放著</li>
 									</ul>
 								</div>
 							</section>
 							{% endif %}
 
 						<!-- Four -->
+							<section id="contact">
+								<div class="container">
+								<h3>客服聯繫</h3>
+
+								<p>lineID</p>
+								<p>名稱</p>
+								<p>123</p>
+								<p>321</p>
+								<p>123</p>
+
+
+
+
+
+						<!-- Four 
 							<section id="contact">
 								<div class="container">
 									<h3>Contact Me</h3>
@@ -177,33 +185,7 @@
 										</div>
 									</form>
 								</div>
-							</section>
-
-							<section id="incoming_1">
-								<div class="container">
-									<h3>下注用的地方</h3>
-									<p>組合1、下 / 不下  之類的</p>
-									
-								</div>
-							</section>
-
-							<section id="incoming_2">
-								<div class="container">
-									<h3>下注用的地方</h3>
-									<p>組合2、下 / 不下  之類的</p>
-									
-								</div>
-							</section>
-						<!-- Five -->
-							<section id="five">
-								<div class="container">
-									<h2>詳細名單</h2>
-								</div>
-							</section>							
-
-
-
-
+							</section>-->
 
 
 						<!-- Five -->
