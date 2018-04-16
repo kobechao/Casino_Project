@@ -13,7 +13,8 @@ from hashlib import sha256
 
 import sys
 import os
-import requests
+
+from . import util
 
 
 @csrf_exempt
@@ -50,30 +51,35 @@ def login_register_page( request ) :
 				phone = obj.account
 				success = obj.password == post.get('pwd_login', '')
 
+				recaptchaVerified = util.recaptcha_verify( post.get('g-recaptcha-response', ''))
+				if recaptchaVerified :
+					if success :
 
-				if success :
+						if request.user.is_authenticated: 
+							messages.info( request, 'The User is Logined!')
+							return HttpResponseRedirect('/index/')
+						
+						user = auth.authenticate( username=name, email=phone, password=obj.password )
 
-					if request.user.is_authenticated: 
-						messages.info( request, 'The User is Logined!')
-						return HttpResponseRedirect('/index/')
-					
-					user = auth.authenticate( username=name, email=phone, password=obj.password )
+						if user is not None and user.is_active :
 
-					if user is not None and user.is_active :
+							if user.is_active :
 
-						if user.is_active :
+								auth.login( request, user )
+								messages.success( request,'Success Login!')
+								request.session['name'] = name
 
-							auth.login( request, user )
-							messages.success( request,'Success Login!')
-							request.session['name'] = name
+								print (request.session['name'])
+								print (name)
 
-							print (request.session['name'])
-							print (name)
+								return render( request, 'index.html', { 'user_name': request.session['name'] } )
+					else :
 
-							return render( request, 'index.html', { 'user_name': request.session['name'] } )
-				else :
+						messages.error( request, 'Wrong Password!')
+						return HttpResponseRedirect('/signin/')
 
-					messages.error( request, 'Wrong Password!')
+				else:
+					messages.error( request, 'Recaptcha Error. Check Your Validity!')
 					return HttpResponseRedirect('/signin/')
 
 				
@@ -89,10 +95,9 @@ def login_register_page( request ) :
 
 
 				if all( [name, phone, password, password_confirm] ) :
+					
 					if password == password_confirm :
 						
-						print( 'yes')
-
 						Successed = False; Registered = False
 
 						try :
@@ -102,16 +107,24 @@ def login_register_page( request ) :
 						except Exception as e :
 							Registered = False
 
+						recaptchaVerified = util.recaptcha_verify( post.get('g-recaptcha-response', ''))
 
-						if not Registered :
-							
-							Login1( name=name, account=phone, password=password, certified=0, money=0, bet=0, totalMoney=0, totalIntro=0, totalPer=0, introBet=0, authority=0).save()
-							user = User.objects.create_user(username=name, email=phone, password=password)
-							user.save()
-							msg = 'Register Successed!!'; Successed = True
+						# print( 'recaptcha_verify', recaptchaVerified, type(recaptchaVerified) )
+						if recaptchaVerified :
 
+							if not Registered :
+								
+								Login1( name=name, account=phone, password=password, certified=0, money=0, bet=0, totalMoney=0, totalIntro=0, totalPer=0, introBet=0, authority=0).save()
+								user = User.objects.create_user(username=name, email=phone, password=password)
+								user.save()
+
+
+								msg = 'Register Successed!!'; Successed = True
+
+							else :
+								msg = 'The User Has Signed Up Before!'; Successed = False
 						else :
-							msg = 'The User Has Signed Up Before!'; Successed = False
+							msg = 'Recaptcha Error. Check Your Validity!'; Successed = False
 
 					else :
 						msg = 'Check The Confirm Password!'; Successed = False
