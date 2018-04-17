@@ -20,7 +20,10 @@ from . import util
 @csrf_exempt
 def index( request ) :
 	if request.user.is_authenticated :
-		return render( request, 'index.html', { 'user_name': request.session['name'] } )
+		return render( request, 'index.html', { 
+									'user_name': request.session['name'],
+									'intro_code': request.session['introCode']
+									})
 	else :
 		return render( request, 'index.html' )
 
@@ -51,6 +54,9 @@ def login_register_page( request ) :
 				phone = obj.account
 				success = obj.password == post.get('pwd_login', '')
 
+				myIntroCode = obj.sn2
+				print( myIntroCode )
+
 				recaptchaVerified = util.recaptcha_verify( post.get('g-recaptcha-response', ''))
 				if recaptchaVerified :
 					if success :
@@ -59,7 +65,7 @@ def login_register_page( request ) :
 							messages.info( request, 'The User is Logined!')
 							return HttpResponseRedirect('/index/')
 						
-						user = auth.authenticate( username=name, email=phone, password=obj.password )
+						user = auth.authenticate( username=phone, password=obj.password )
 
 						if user is not None and user.is_active :
 
@@ -68,11 +74,13 @@ def login_register_page( request ) :
 								auth.login( request, user )
 								messages.success( request,'Success Login!')
 								request.session['name'] = name
+								request.session['introCode'] = myIntroCode
 
-								print (request.session['name'])
-								print (name)
+								return render( request, 'index.html', { 
+									'user_name': request.session['name'],
+									'intro_code': request.session['introCode']
 
-								return render( request, 'index.html', { 'user_name': request.session['name'] } )
+									})
 					else :
 
 						messages.error( request, 'Wrong Password!')
@@ -92,6 +100,9 @@ def login_register_page( request ) :
 				phone = post.get('phone_signup', None)
 				password = post.get('pwd_signup', None)
 				password_confirm = post.get('pwd2_signup', None)
+
+				# sn2
+				other_introCode = post.get('introducer_signup', '')
 
 
 				if all( [name, phone, password, password_confirm] ) :
@@ -113,9 +124,12 @@ def login_register_page( request ) :
 						if recaptchaVerified :
 
 							if not Registered :
+
+								# sn1
+								myIntroCode = util.generate_introducer_code(6)
 								
-								Login1( name=name, account=phone, password=password, certified=0, money=0, bet=0, totalMoney=0, totalIntro=0, totalPer=0, introBet=0, authority=0).save()
-								user = User.objects.create_user(username=name, email=phone, password=password)
+								Login1( name=name, account=phone, password=password, sn1=other_introCode, sn2=myIntroCode, certified=0, money=0, bet=0, totalMoney=0, totalIntro=0, totalPer=0, introBet=0, authority=0).save()
+								user = User.objects.create_user( username=phone, password=password)
 								user.save()
 
 
@@ -156,7 +170,7 @@ def login_register_page( request ) :
 		return HttpResponse( '%s %s %s\n%s' % (str(exc_type), str(fname), str(exc_tb.tb_lineno), str(e) ) )
 
 
-
+@csrf_exempt
 def logout( request ) :
 	msg = ''
 	try :
@@ -167,3 +181,13 @@ def logout( request ) :
 
 	messages.info( request, msg )
 	return HttpResponseRedirect( '/index/' )
+
+
+@csrf_exempt
+def game( request ):
+
+	data =  {
+		'number_of_balls': 10,
+		'number_can_select': 6
+	}
+	return render( request, 'game.html', data)

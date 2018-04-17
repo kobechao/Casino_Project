@@ -8,5 +8,7 @@ urlpatterns = [
     url(r'^signin/', views.login_register_page, name='signin' ),
     url(r'^index/', views.index, name='index' ),
     url(r'^signout/', views.logout, name='logout' ),
+    url(r'^game/', views.game, name='game' ),
+
 
 ]+ static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)

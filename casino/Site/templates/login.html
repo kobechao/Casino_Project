@@ -44,7 +44,7 @@
             <h2>LOGIN</h2>
             <form id="login_form" method="post" accept-charset="UTF-8">
             {% csrf_token %}
-              <input placeholder="手機" type="text" id="phone_login" name="phone_login">
+              <input placeholder="帳號" type="text" id="phone_login" name="phone_login">
               <input placeholder="密碼" type="password" id="pwd_login" name="pwd_login" style="margin-bottom: 10px;">
               
               <div class="g-recaptcha" data-sitekey="6LcpRVMUAAAAALRoAEZ4bsknDNNbf7cM9e_HOIaw"></div>
@@ -60,11 +60,12 @@
             <h2>SIGN UP</h2>
             <form id="signup_form" method="POST" accept-charset="UTF-8">
             {% csrf_token %}
-                <input placeholder="手機" type="text" id="phone_signup" name="phone_signup"> 
-                <input placeholder="暱稱" type="text" id="user_signup" name="user_signup"> 
-                <input placeholder="密碼" type="password" id="pwd_signup" name="pwd_signup"> 
-                <input placeholder="再次確認密碼" type="password" id="pwd2_signup" name="pwd2_signup" style="margin-bottom: 10px;">
-
+                <input placeholder="帳號" type="text" id="phone_signup" name="phone_signup" required> 
+                <input placeholder="暱稱" type="text" id="user_signup" name="user_signup" required> 
+                <input placeholder="密碼" type="password" id="pwd_signup" name="pwd_signup" required> 
+                <input placeholder="再次確認密碼" type="password" id="pwd2_signup" name="pwd2_signup" required>
+                <input placeholder="推薦人號碼（選填）" type="text" id="introducer_signup" name="introducer_signup" style="margin-bottom: 10px;">
+                
                 <div class="g-recaptcha" data-sitekey="6LcpRVMUAAAAALRoAEZ4bsknDNNbf7cM9e_HOIaw"></div>
 
                 <button type="summit" class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>

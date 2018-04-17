@@ -1,5 +1,5 @@
 import requests
-
+import random
 
 def recaptcha_verify( g_response ) :
 	
@@ -17,3 +17,15 @@ def recaptcha_verify( g_response ) :
 		return res.json()['success']
 	else :
 		return False
+
+
+def generate_introducer_code( length ) :
+
+	seed = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+	code = ''
+	
+	for i in range( length ) :
+		code += random.choice(seed)
+
+	assert len(code) == 6
+	return code
