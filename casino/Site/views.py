@@ -76,7 +76,7 @@ def login_register_page( request ) :
 								request.session['name'] = name
 								request.session['introCode'] = myIntroCode
 
-								return render( request, 'index.html', { 
+								return redirect( '/index/', { 
 									'user_name': request.session['name'],
 									'intro_code': request.session['introCode']
 
