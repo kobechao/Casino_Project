@@ -1,7 +1,7 @@
 # django settings
 from django.shortcuts import render, redirect
 from django.forms.models import modelform_factory
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotAllowed
 from django.contrib import auth, messages
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -23,10 +23,10 @@ from datetime import datetime
 def index( request ) :
 	if request.user.is_authenticated :
 		return render( request, 'index.html', { 
-									'user_name': request.session['name'],
-									'intro_code': request.session['introCode'],
-									'authority': request.session['auth']
-									})
+			'user_name': request.session['name'],
+			'intro_code': request.session['introCode'],
+			'authority': request.session['auth']
+			})
 	else :
 		return render( request, 'index.html' )
 
@@ -34,7 +34,7 @@ def index( request ) :
 @csrf_exempt
 def manage( request ) :
 
-	today = datetime.today().strftime('%Y-%m-%d')
+	today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
 	print( request.method )
 	msg = ''
@@ -50,29 +50,47 @@ def manage( request ) :
 
 			try :
 				obj = Login1.objects.get( account=phone )
+				assert int(money)
+				if obj.authority == 1 :
+					msg = 'Cannot Add Money To Auth User!'
+					messages.info(request, msg)
+					return render( request, 'manage.html', { 
+						'user_name': request.session['name'],
+						'intro_code': request.session['introCode'],
+						'authority': request.session['auth']
+						})
+
 			except Exception as e :
 				print( str(e) )
 				msg = 'No Such User! Please Check!'
-				return redirect( '/manage/' )
+				messages.error(request, msg)
+				return render( request, 'manage.html', { 
+						'user_name': request.session['name'],
+						'intro_code': request.session['introCode'],
+						'authority': request.session['auth']
+						})
 
-			assert int(money)
 
-			obj.money -= int(money)
-			obj.totalMoney += int(money)
-
-			User1( date=today, account=phone, bet=money, number=money, durationBet=money ).save()
-
+			obj.money += int(money)
+			User1( date=today, account=phone, bet=money, number=0, durationBet=0 ).save()
 			obj.save()
 
-			return render( request, 'manage.html' )
+			msg = 'Success'
+			messages.success(request, msg)
+			return render( request, 'manage.html', { 
+				'user_name': request.session['name'],
+				'intro_code': request.session['introCode'],
+				'authority': request.session['auth']
+				})
 
-	if request.user.is_authenticated :
+	if request.user.is_authenticated and request.session['auth']  == 1 :
 		return render( request, 'manage.html', { 
-									'user_name': request.session['name'],
-									'intro_code': request.session['introCode'],
-									'authority': request.session['auth']
-									})
+			'user_name': request.session['name'],
+			'intro_code': request.session['introCode'],
+			'authority': request.session['auth']
+			})
 	else :
+		
 		return render( request, 'manage.html' )
 
 
@@ -104,7 +122,6 @@ def login_register_page( request ) :
 				authority = obj.authority
 
 				myIntroCode = obj.sn2
-				# print( myIntroCode )
 
 				recaptchaVerified = util.recaptcha_verify( post.get('g-recaptcha-response', ''))
 				# recaptchaVerified = True

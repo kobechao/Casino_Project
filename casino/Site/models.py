@@ -21,7 +21,7 @@ class Login1(models.Model):
 
 
 class User1(models.Model):
-    date = models.DateTimeField(db_column='date',max_length=100)
+    date = models.DateTimeField(primary_key=True, db_column='date',max_length=100)
     account = models.CharField(primary_key=True, db_column='account',max_length=20,blank=False)
     bet = models.IntegerField(db_column='bet',max_length=20)
     number = models.CharField(db_column='number',max_length=20)

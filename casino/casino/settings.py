@@ -16,6 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -76,20 +77,20 @@ WSGI_APPLICATION = 'casino.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        # 'ENGINE': 'sqlserver_ado',
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'casino_project',
-        'USER': 'root',
-        'PASSWORD': 'tina1633',
-        'HOST': 'localhost',
-        'OPTION': {
-            'read_default_file': '/etc/mysql/my.cnf',
-        },
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'sqlserver_ado',
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'casino_project',
+#         'USER': 'root',
+#         'PASSWORD': 'tina1633',
+#         'HOST': 'localhost',
+#         'OPTION': {
+#             'read_default_file': '/etc/mysql/my.cnf',
+#         },
 
-    }
-}
+#     }
+# }
 
 
 
@@ -130,3 +131,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+try :
+    from .local_settings import *
+except ImportError :
+    pass
+

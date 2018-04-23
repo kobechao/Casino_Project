@@ -228,7 +228,7 @@ iframe {
   font-size: 39px;
   color: #333333;
   line-height: 1.2;
-  text-align: left;
+  text-align: center;
   padding-bottom: 44px;
 }
 
@@ -329,6 +329,7 @@ textarea.input100 {
   display: flex;
   flex-wrap: wrap;
   margin-top: -25px;
+  text-align: center;
 }
 
 .contact100-form-btn {
