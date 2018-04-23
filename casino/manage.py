@@ -9,6 +9,7 @@ if __name__ == "__main__":
             raise EnvironmentError('Must Use Python3')
     except EnvironmentError as envErr :
         print( str(envErr) )
+        sys.exit(0)
 
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "casino.settings")

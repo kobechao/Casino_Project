@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
-from .models import Login1
+from .models import Login1, User1
 from hashlib import sha256
 
 import sys
@@ -16,16 +16,64 @@ import os
 
 from . import util
 
+from datetime import datetime
+
 
 @csrf_exempt
 def index( request ) :
 	if request.user.is_authenticated :
 		return render( request, 'index.html', { 
 									'user_name': request.session['name'],
-									'intro_code': request.session['introCode']
+									'intro_code': request.session['introCode'],
+									'authority': request.session['auth']
 									})
 	else :
 		return render( request, 'index.html' )
+
+
+@csrf_exempt
+def manage( request ) :
+
+	today = datetime.today().strftime('%Y-%m-%d')
+
+	print( request.method )
+	msg = ''
+
+	if request.POST :
+		print( request.POST )
+		post = request.POST
+
+		phone = post.get('phone', None)
+		money = post.get('money', 0)
+
+		if phone is not None :
+
+			try :
+				obj = Login1.objects.get( account=phone )
+			except Exception as e :
+				print( str(e) )
+				msg = 'No Such User! Please Check!'
+				return redirect( '/manage/' )
+
+			assert int(money)
+
+			obj.money -= int(money)
+			obj.totalMoney += int(money)
+
+			User1( date=today, account=phone, bet=money, number=money, durationBet=money ).save()
+
+			obj.save()
+
+			return render( request, 'manage.html' )
+
+	if request.user.is_authenticated :
+		return render( request, 'manage.html', { 
+									'user_name': request.session['name'],
+									'intro_code': request.session['introCode'],
+									'authority': request.session['auth']
+									})
+	else :
+		return render( request, 'manage.html' )
 
 
 
@@ -53,11 +101,13 @@ def login_register_page( request ) :
 				name = obj.name
 				phone = obj.account
 				success = obj.password == post.get('pwd_login', '')
+				authority = obj.authority
 
 				myIntroCode = obj.sn2
-				print( myIntroCode )
+				# print( myIntroCode )
 
 				recaptchaVerified = util.recaptcha_verify( post.get('g-recaptcha-response', ''))
+				# recaptchaVerified = True
 				if recaptchaVerified :
 					if success :
 
@@ -68,19 +118,27 @@ def login_register_page( request ) :
 						user = auth.authenticate( username=phone, password=obj.password )
 
 						if user is not None and user.is_active :
+							auth.login( request, user )
+							request.session['name'] = name
+							request.session['introCode'] = myIntroCode
+							request.session['auth'] = authority
 
-							if user.is_active :
-
-								auth.login( request, user )
+							if authority == 0:
 								messages.success( request,'Success Login!')
-								request.session['name'] = name
-								request.session['introCode'] = myIntroCode
+								path = '/index/'
+							
+							elif authority == 1 :
+								messages.info( request,'Login In Management!')
+								path = '/manage/'
 
-								return redirect( '/index/', { 
+							print( authority )
+
+							return redirect( path, { 
 									'user_name': request.session['name'],
-									'intro_code': request.session['introCode']
+									'intro_code': request.session['introCode'],
+									'authority': request.session['auth']
+									})	
 
-									})
 					else :
 
 						messages.error( request, 'Wrong Password!')
@@ -191,3 +249,5 @@ def game( request ):
 		'number_can_select': 6
 	}
 	return render( request, 'game.html', data)
+
+
