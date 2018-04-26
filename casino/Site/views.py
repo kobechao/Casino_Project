@@ -44,21 +44,14 @@ def manage( request ) :
 		post = request.POST
 
 		phone = post.get('phone', None)
-		money = post.get('money', 0)
+		money = post.get('money', None)
+		authButtonValue = post.get('authBtn', None)
 
 		if phone is not None :
 
 			try :
 				obj = Login1.objects.get( account=phone )
-				assert int(money)
-				if obj.authority == 1 :
-					msg = 'Cannot Add Money To Auth User!'
-					messages.info(request, msg)
-					return render( request, 'manage.html', { 
-						'user_name': request.session['name'],
-						'intro_code': request.session['introCode'],
-						'authority': request.session['auth']
-						})
+				print( obj )
 
 			except Exception as e :
 				print( str(e) )
@@ -70,18 +63,78 @@ def manage( request ) :
 						'authority': request.session['auth']
 						})
 
+			if obj.name == request.session['name'] :
+				msg = 'Cannot Manage Yourself!'
+				messages.error(request, msg)
+				return render( request, 'manage.html', { 
+						'user_name': request.session['name'],
+						'intro_code': request.session['introCode'],
+						'authority': request.session['auth']
+						})
+				
+			# account money management
+			if money is not None :
 
-			obj.money += int(money)
-			User1( date=today, account=phone, bet=money, number=0, durationBet=0 ).save()
-			obj.save()
+				if obj.authority == 1 :
+					msg = 'Cannot Add Money To Authorized User!'
+					messages.info(request, msg)
+					return render( request, 'manage.html', { 
+						'user_name': request.session['name'],
+						'intro_code': request.session['introCode'],
+						'authority': request.session['auth']
+						})
 
-			msg = 'Success'
-			messages.success(request, msg)
-			return render( request, 'manage.html', { 
-				'user_name': request.session['name'],
-				'intro_code': request.session['introCode'],
-				'authority': request.session['auth']
-				})
+				obj.money += int(money)
+				User1( date=today, account=phone, bet=money, number=0, durationBet=0 ).save()
+				obj.save()
+
+				messages.success(request, 'Success')
+
+
+			# account management function
+			elif money is None :
+
+				if authButtonValue is not None :
+
+					if str(authButtonValue).lower() == 'enable' :
+						obj.authority = 0
+						messages.success( request, 'Enable Account %s' % (phone) )
+
+					elif str(authButtonValue).lower() == 'disable' :
+						obj.authority = 2
+						messages.success( request, 'Disable Account %s' % (phone) )
+
+					elif str(authButtonValue).lower() == 'certified_account_btn' :
+						obj.certified = post.get('certified', 0)
+						messages.success( request, 'Certified Account %s' % (phone) )
+
+					elif str(authButtonValue).lower() == 'search_one_btn' :
+						personalData = dict()
+						personalData['account'] = obj.account
+						personalData['name'] = obj.name
+						personalData['sn1'] = obj.sn1
+						personalData['sn2'] = obj.sn2
+						personalData['certified'] = obj.certified
+						personalData['money'] = obj.money
+						personalData['bet'] = obj.bet
+						personalData['totalMoney'] = obj.totalMoney
+						personalData['totalPer'] = obj.totalPer
+						personalData['introBet'] = obj.introBet
+						messages.success( request, 'Search Account %s' % (phone) )
+
+					
+				obj.save()
+
+		elif phone is None :
+			if authButtonValue is not None :
+				if str(authButtonValue).lower() == 'search_all_btn' :
+					messages.success( request, 'Search All Account' )
+
+
+
+
+
+
 
 	if request.user.is_authenticated and request.session['auth']  == 1 :
 		return render( request, 'manage.html', { 
@@ -144,7 +197,7 @@ def login_register_page( request ) :
 								messages.success( request,'Success Login!')
 								path = '/index/'
 							
-							elif authority == 1 :
+							elif authority == 1 or authority == 2 :
 								messages.info( request,'Login In Management!')
 								path = '/manage/'
 

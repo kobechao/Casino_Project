@@ -12,6 +12,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="{% static 'main_page/assets/css/main.css' %}" />
+		<!-- <link rel="stylesheet" type="text/css" href="{% static 'manage_page/css/main.css' %}"> -->
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	</head>
 	<body>
@@ -51,10 +52,10 @@
 				</nav>
 				<footer>
 					<ul class="icons">
-						<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+						<!-- <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li> -->
 						<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
 						<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li>
+						<!-- <li><a href="#" class="icon fa-github"><span class="label">Github</span></a></li> -->
 						<li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
 					</ul>
 				</footer>
@@ -71,8 +72,7 @@
 								<div class="container">
 									<header class="major">
 										<h2>標題</h2>
-										<p>內文開頭123<br />
-										<!-- powered by <a href="http://html5up.net">HTML5 UP</a>.</p> -->
+										<p>專屬個人下注網頁<br />
 									</header>
 
 								</div>
@@ -105,22 +105,66 @@
 										<article>
 											<a href="#" class="image"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></a>
 											<div class="inner">
+												{% ifequal authority 2 %}
 												<h4>莊家殺手</h4>
-												<p>這邊會有個連結連到歷史號碼</p>
+												<p>---這邊會有個連結連到歷史號碼---</p>
+												{% else %}
+													<h4>下注</h4>
+													<p>---這邊可以下注---</p>
+
+													<form method="POST">
+														{% csrf_token %}
+														<span>
+															下注區一
+														</span>
+														<input type="text" name="bet" placeholder="請輸入下注金額">
+														<div>
+															<button class="contact100-form-btn" type="summit" name="betBtn" value="one">
+																組合一 下注
+															</button>
+
+															<button class="contact100-form-btn" type="summit" name="betBtn" value="two">
+																組合二 下注
+															</button>
+														</div>
+													</form>
+
+													<form method="POST">
+														{% csrf_token %}
+														<span>
+															下注區二
+														</span>
+
+														<div>
+															<input type="text" id="bet2_1" name="bet2_1" placeholder="請輸入下注金額">
+															<button class="contact100-form-btn" type="summit" name="betBtn" value="bet2_1">
+																組合一 下注
+															</button>
+														</div>
+														<p></p>
+														<div>
+															<input type="text" id="bet2_2" name="bet2_2"  placeholder="請輸入下注金額">
+															<button class="contact100-form-btn" type="summit" name="betBtn" value="bet2_2">
+																組合二 下注
+															</button>
+														</div>
+													</form>
+												{% endifequal %}
+													
 											</div>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></a>
 											<div class="inner">
 												<h4>組合1</h4>
-												<p>下注的按鈕</p>
+												<p>---下注的按鈕---</p>
 											</div>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></a>
 											<div class="inner">
 												<h4>組合2</h4>
-												<p>下注的按鈕</p>
+												<p>---下注的按鈕---</p>
 											</div>
 										</article>
 									</div>
@@ -132,7 +176,7 @@
 							<section id="bet">
 								<div class="container">
 									<h3>詳細名單</h3>
-									<p>這邊會放該有的名單訊息,ex:</br>日期、帳號、下注多少</p>
+									<p>---這邊會放該有的名單訊息,ex:</br>日期、帳號、下注多少---</p>
 									<ul class="feature-icons">
 										<li class="fa-code">先放著</li>
 										<li class="fa-cubes">先放著</li>

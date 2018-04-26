@@ -32,10 +32,10 @@
 
 
 	<div class="container-contact100">
-		<div class="contact100-map" id="google_map" data-map-x="25.033964" data-map-y="121.564472" data-pin="{% static 'manage_page/images/icons/map-marker.png' %}" data-scrollwhell="0" data-draggable="1"></div>
+		<!-- <div class="contact100-map" id="google_map" data-map-x="25.033964" data-map-y="121.564472" data-pin="{% static 'manage_page/images/icons/map-marker.png' %}" data-scrollwhell="0" data-draggable="1"></div> -->
 
 		<button class="contact100-btn-show">
-			<i class="fa fa-envelope-o" aria-hidden="true"></i>
+			<i class="fa fa-laptop" aria-hidden="true"></i>
 		</button>
 
 		<div class="wrap-contact100">
@@ -43,18 +43,15 @@
 				<i class="fa fa-close" aria-hidden="true"></i>
 			</button>
 
-			
+			{% ifequal authority 1 %}
+
 			<form method="POST" class="contact100-form validate-form">
 				{% csrf_token %}
 				
-					{% ifequal authority 1 %}
-
 					<span class="contact100-form-title">
 						請指定帳號輸入金額
 					</span>
 
-				
-					
 						<div class="wrap-input100 rs1-wrap-input100" data-validate="Name is required">
 							<span class="label-input100">帳號</span>
 							<input class="input100" type="text" name="phone" placeholder="請輸入帳號" required>
@@ -67,28 +64,139 @@
 							<span class="focus-input100"></span>
 						</div>
 
-						<!-- <div class="wrap-input100" data-validate = "Message is required">
-							<span class="label-input100">備註</span>
-							<textarea class="input100" name="note" placeholder="Your message here..."></textarea>
-							<span class="focus-input100"></span>
-						</div>
-	 -->
 						<div class="container-contact100-form-btn">
-							<button class="contact100-form-btn" type="summit">
+							<button class="contact100-form-btn" type="summit" name="authBtn" value="set_money_btn" style="background-color: #FFA556">
 								<span>
 									Submit
-									<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+									<i class="fa fa-arrow-circle-up m-l-7" aria-hidden="true"></i>
 								</span>
 							</button>
 						</div>
-					{% else %}
-					<span class="contact100-form-title">
-						請確認是否為管理者帳號
-					</span>
-
-					{% endifequal %}
 
 			</form>
+
+			<form method="POST" class="contact100-form validate-form">
+				{% csrf_token %}
+				
+
+					<span class="contact100-form-title">
+						設定帳號權限
+					</span>
+						<div class="wrap-input100 rs1-wrap-input100" data-validate="Name is required">
+							<span class="label-input100">帳號</span>
+							<input class="input100" type="text" name="phone" placeholder="請輸入帳號" required>
+							<span class="focus-input100"></span>
+						</div>
+
+						
+						<div class="container-contact100-form-btn">
+							<button class="contact100-form-btn" name="authBtn" value="disable" type="summit" style="background-color: #FF251B">
+								<span>
+									Disable
+									<i class="fa fa-times-circle m-l-7" aria-hidden="true"></i>
+								</span>
+							</button>
+
+							<button class="contact100-form-btn" name="authBtn" value="enable" type="summit"  style="background-color: #21FF1E">
+								<span>
+									Enable
+									<i class="fa fa-check-circle m-l-7" aria-hidden="true"></i>
+								</span>
+							</button>
+						</div>
+
+
+			</form>
+
+			<form method="POST" class="contact100-form validate-form">
+				{% csrf_token %}
+				
+
+					<span class="contact100-form-title">
+						設定帳號認證結果(Certification)
+					</span>
+						<div class="wrap-input100 rs1-wrap-input100" data-validate="Name is required">
+							<span class="label-input100">帳號</span>
+							<input class="input100" type="text" name="phone" placeholder="請輸入帳號" required>
+							<span class="focus-input100"></span>
+						</div>
+
+						<div class="wrap-input100 rs1-wrap-input100" data-validate="Name is required">
+							<span class="label-input100">認證</span>
+							<input class="input100" type="text" name="certified" placeholder="請輸入帳號認證值" required>
+							<span class="focus-input100"></span>
+						</div>
+
+						
+						<div class="container-contact100-form-btn">
+							
+							<button class="contact100-form-btn" name="authBtn" value="certified_account_btn" type="summit"  style="background-color: #21FF1E">
+								<span>
+									Confirm
+									<i class="fa fa-check-circle m-l-7" aria-hidden="true"></i>
+								</span>
+							</button>
+						</div>
+
+
+			</form>
+
+
+			<form method="POST" class="contact100-form validate-form">
+				{% csrf_token %}
+				
+
+					<span class="contact100-form-title">
+						查詢帳號紀錄
+					</span>
+						<div class="wrap-input100 rs1-wrap-input100" data-validate="Name is required">
+							<span class="label-input100">帳號</span>
+							<input class="input100" type="text" name="phone" placeholder="請輸入帳號" required>
+							<span class="focus-input100"></span>
+						</div>
+
+						
+						<div class="container-contact100-form-btn">
+
+							<button class="contact100-form-btn" name="authBtn" value="search_one_btn" type="summit"  style="background-color: #21FF1E">
+								<span>
+									Search
+									<i class="fa fa-check-circle m-l-7" aria-hidden="true"></i>
+								</span>
+							</button>
+						</div>
+
+			</form>
+
+			<form method="POST" class="contact100-form validate-form">
+				{% csrf_token %}
+				
+
+					<span class="contact100-form-title">
+						查詢總紀錄
+					</span>
+						
+						<div class="container-contact100-form-btn">
+
+							<button class="contact100-form-btn" name="authBtn" value="search_all_btn" type="summit"  style="background-color: #21FF1E">
+								<span>
+									Search
+									<i class="fa fa-check-circle m-l-7" aria-hidden="true"></i>
+								</span>
+							</button>
+						</div>
+
+			</form>
+
+
+			{% else %}
+				<span class="contact100-form-title">
+					請確認是否為管理者帳號
+				</span>
+
+			{% endifequal %}
+
+
 			<div class="container-contact100-form-btn" >
 				<button class="contact100-form-btn">
 							{% if request.user.is_authenticated %}
@@ -104,9 +212,6 @@
 							{% endif %}
 							</button>
 
-							
-
-						
 					</div>
 
 			
@@ -148,12 +253,7 @@
   gtag('config', 'UA-23581568-13');
 </script> -->
 	<script type="text/javascript">
-		{% if not request.user.is_authenticated %}
-			$(".contact100-form-btn").css("background-color: #2CFF37;");
-		{% else %}
-			$(".contact100-form-btn").css("background-color: #ff4b5a;");
-		{% endif %}
-
+		
 		{% if messages %}
 			        {% for message in messages %}
 			            alert( '{{message}}' )
