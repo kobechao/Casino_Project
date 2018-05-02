@@ -192,12 +192,13 @@ iframe {
 }
 
 .wrap-contact100 {
-  width: 1170px;
+  width: 1100px;
   background: #fff;
   border-radius: 10px;
   padding: 82px 180px 33px 180px;
   position: relative;
   display: none;
+
 }
 
 .show-wrap-contact100 {
@@ -230,6 +231,7 @@ iframe {
   line-height: 1.2;
   text-align: center;
   padding-bottom: 44px;
+  margin-top: 50px;
 }
 
 
@@ -363,6 +365,16 @@ textarea.input100 {
   -webkit-box-shadow: 0 10px 30px 0px rgba(255, 75, 90, 0.5);
   -o-box-shadow: 0 10px 30px 0px rgba(255, 75, 90, 0.5);
   -ms-box-shadow: 0 10px 30px 0px rgba(255, 75, 90, 0.5);
+}
+
+span.contact100-form-btn {
+  background-color: #86FF8A;
+  width: 160px; 
+  margin-bottom: 20px;
+  color: #000000;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Georgia;
 }
 
 .contact100-form-btn i {
@@ -583,6 +595,28 @@ textarea.input100 {
 
   -webkit-animation: beatbtn 0.9s ease-in-out infinite;
   animation: beatbtn 0.9s ease-in-out infinite;
+}
+
+/* table */
+table {
+  border: 3px #85796B solid;
+  padding: 5px;
+
+}
+.info-title {
+  font-size: 20px;
+  text-align: center;
+  padding: 5px;
+  background-color: #24FF00;
+
+}
+
+.info-cont {
+  font-size: 20px;
+  text-align: center;
+  padding: 5px;
+  background-color: #86FF8A;
+
 }
 
 

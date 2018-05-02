@@ -21,11 +21,49 @@ from datetime import datetime
 
 @csrf_exempt
 def index( request ) :
+	
+	today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+
 	if request.user.is_authenticated :
+		
+		personal_info = Login1.objects.get( account=request.session['account'] )
+		betNote, canBet = util.isValidBetTime()
+
+
+		if request.POST :
+			posts = request.POST
+
+			btn = posts.get('bet_btn', None)
+			betMoney = int( posts.get( 'bet', 0 ) )
+			number = 0
+
+			if ( personal_info.money < betMoney ) :
+				messages.info( request, "Money is Not Enough!")
+				return redirect( '/index/', { 
+					'personal_info': personal_info
+					})
+
+
+			if btn is not None :
+
+				if btn == 'first_bet':
+					number = 1
+				elif btn == 'second_bet':
+					number = 2
+
+			User1( date = today, account = request.session['account'], bet = betMoney * -1, number=number, durationBet=0 ).save()
+			personal_info.money -= betMoney
+			personal_info.bet = 1
+			personal_info.save()
+			return redirect( '/index/', { 
+					'personal_info': personal_info
+					})
+
+		
 		return render( request, 'index.html', { 
-			'user_name': request.session['name'],
-			'intro_code': request.session['introCode'],
-			'authority': request.session['auth']
+			'personal_info': personal_info,
+			'bet_note': betNote,
+			'can_bet': canBet
 			})
 	else :
 		return render( request, 'index.html' )
@@ -36,11 +74,11 @@ def manage( request ) :
 
 	today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
-	print( request.method )
 	msg = ''
+	userBetDatas = userInfoData = None
 
 	if request.POST :
-		print( request.POST )
+
 		post = request.POST
 
 		phone = post.get('phone', None)
@@ -57,21 +95,13 @@ def manage( request ) :
 				print( str(e) )
 				msg = 'No Such User! Please Check!'
 				messages.error(request, msg)
-				return render( request, 'manage.html', { 
-						'user_name': request.session['name'],
-						'intro_code': request.session['introCode'],
-						'authority': request.session['auth']
-						})
+				return render( request, 'manage.html' )
 
 			if obj.name == request.session['name'] :
 				msg = 'Cannot Manage Yourself!'
 				messages.error(request, msg)
-				return render( request, 'manage.html', { 
-						'user_name': request.session['name'],
-						'intro_code': request.session['introCode'],
-						'authority': request.session['auth']
-						})
-				
+				return render( request, 'manage.html' )
+
 			# account money management
 			if money is not None :
 
@@ -79,8 +109,6 @@ def manage( request ) :
 					msg = 'Cannot Add Money To Authorized User!'
 					messages.info(request, msg)
 					return render( request, 'manage.html', { 
-						'user_name': request.session['name'],
-						'intro_code': request.session['introCode'],
 						'authority': request.session['auth']
 						})
 
@@ -107,23 +135,20 @@ def manage( request ) :
 					elif str(authButtonValue).lower() == 'certified_account_btn' :
 						obj.certified = post.get('certified', 0)
 						messages.success( request, 'Certified Account %s' % (phone) )
+					
+					elif str(authButtonValue).lower() == 'account_info' :
+						userInfoData = Login1.objects.get( account=phone )
+						messages.success( request, 'Search Account Info %s' % (phone) )
 
-					elif str(authButtonValue).lower() == 'search_one_btn' :
-						personalData = dict()
-						personalData['account'] = obj.account
-						personalData['name'] = obj.name
-						personalData['sn1'] = obj.sn1
-						personalData['sn2'] = obj.sn2
-						personalData['certified'] = obj.certified
-						personalData['money'] = obj.money
-						personalData['bet'] = obj.bet
-						personalData['totalMoney'] = obj.totalMoney
-						personalData['totalPer'] = obj.totalPer
-						personalData['introBet'] = obj.introBet
-						messages.success( request, 'Search Account %s' % (phone) )
+
+					elif str(authButtonValue).lower() == 'account_log' :
+						userBetDatas = User1.objects.filter ( account = phone )
+						messages.success( request, 'Search Account Bet %s' % (phone) )
 
 					
 				obj.save()
+
+
 
 		elif phone is None :
 			if authButtonValue is not None :
@@ -132,15 +157,13 @@ def manage( request ) :
 
 
 
-
-
-
+	# print( userBetDatas, userInfoData )
 
 	if request.user.is_authenticated and request.session['auth']  == 1 :
 		return render( request, 'manage.html', { 
-			'user_name': request.session['name'],
-			'intro_code': request.session['introCode'],
-			'authority': request.session['auth']
+			'authority': request.session['auth'],
+			'userBetDatas': userBetDatas,
+			'userInfoData': userInfoData
 			})
 	else :
 		
@@ -157,7 +180,6 @@ def login_register_page( request ) :
 			post = request.POST
 			print( post )
 			isLogin = post.get('phone_login', None)
-
 
 			# Login
 			if isLogin is not None :
@@ -190,6 +212,7 @@ def login_register_page( request ) :
 						if user is not None and user.is_active :
 							auth.login( request, user )
 							request.session['name'] = name
+							request.session['account'] = phone
 							request.session['introCode'] = myIntroCode
 							request.session['auth'] = authority
 
@@ -200,8 +223,6 @@ def login_register_page( request ) :
 							elif authority == 1 or authority == 2 :
 								messages.info( request,'Login In Management!')
 								path = '/manage/'
-
-							print( authority )
 
 							return redirect( path, { 
 									'user_name': request.session['name'],

@@ -110,4 +110,35 @@
 
 	});
 
+	// kobechao
+	$('div #first_comb').click( ()=> {
+		if( $('#first_bet_field').prop('disabled') == false ) {
+			$('#second_bet_field').prop('disabled', true);
+		} else {
+			$('#first_bet_field').prop('disabled', false);
+			$('#second_bet_field').prop('disabled', true);
+		}
+	})
+
+	$('div #second_comb').click( ()=> {
+		if( $('#second_bet_field').prop('disabled') == false ) {
+			$('#first_bet_field').prop('disabled', true);
+
+		} else {
+			$('#first_bet_field').prop('disabled', true);
+			$('#second_bet_field').prop('disabled', false);
+		}
+	})
+
+	var today = new Date()
+	if( today.getHours() >= 12 && today.getHours() < 18 ) {
+		$('form .bet_amount').attr( 'placeholder', '請輸入下注金額');
+
+	} else {
+		$('form .bet_amount').attr( 'placeholder', '已過今日下注時間!').blur();
+		$('div #second_comb').unbind('click')
+		$('div #first_comb').unbind('click')
+	}
+
+
 })(jQuery);

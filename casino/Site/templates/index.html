@@ -12,9 +12,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="{% static 'main_page/assets/css/main.css' %}" />
-		<!-- <link rel="stylesheet" type="text/css" href="{% static 'manage_page/css/main.css' %}"> -->
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	</head>
+	
 	<body>
 
 		<!-- Header -->
@@ -23,7 +23,7 @@
 					<span class="image avatar"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></span>
 
 					{% if request.user.is_authenticated %}
-					<h1 id="logo"><a href="#">{{ user_name }}</a></h1>
+					<h1 id="logo"><a href="#">{{ personal_info.name }}</a></h1>
 					<p>Hello!<br />
 					</p>
 					{% else %}
@@ -72,7 +72,7 @@
 								<div class="container">
 									<header class="major">
 										<h2>標題</h2>
-										<p>專屬個人下注網頁<br />
+										<p>---專屬個人下注網頁---<br />
 									</header>
 
 								</div>
@@ -85,10 +85,10 @@
 									<h3>個人資訊</h3>
 									<p>---這邊會放個人資訊---</p>
 									<ul class="feature-icons">
-										<li class="fa-code">現在餘額</li>
+										<li class="fa-code">現在餘額: {{ personal_info.money }}</li>
 										<li class="fa-cubes">目前底下人下注金額</li>
 										<li class="fa-book">目前獎金累積%數...</li>
-										<li class="fa-coffee">介紹碼: {{ intro_code }}</li>
+										<li class="fa-coffee">介紹碼: {{ personal_info.sn2 }}</li>
 										<!-- <li class="fa-bolt">Pending</li> -->
 										<!-- <li class="fa-users">Pending</li> -->
 									</ul>
@@ -102,71 +102,66 @@
 								<div class="container">
 									<h3>號碼相關</h3>
 									<div class="features">
-										<article>
-											<a href="#" class="image"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></a>
-											<div class="inner">
-												{% ifequal authority 2 %}
-												<h4>莊家殺手</h4>
-												<p>---這邊會有個連結連到歷史號碼---</p>
-												{% else %}
-													<h4>下注</h4>
-													<p>---這邊可以下注---</p>
-
-													<form method="POST">
-														{% csrf_token %}
-														<span>
-															下注區一
-														</span>
-														<input type="text" name="bet" placeholder="請輸入下注金額">
-														<div>
-															<button class="contact100-form-btn" type="summit" name="betBtn" value="one">
-																組合一 下注
-															</button>
-
-															<button class="contact100-form-btn" type="summit" name="betBtn" value="two">
-																組合二 下注
-															</button>
-														</div>
-													</form>
-
-													<form method="POST">
-														{% csrf_token %}
-														<span>
-															下注區二
-														</span>
-
-														<div>
-															<input type="text" id="bet2_1" name="bet2_1" placeholder="請輸入下注金額">
-															<button class="contact100-form-btn" type="summit" name="betBtn" value="bet2_1">
-																組合一 下注
-															</button>
-														</div>
-														<p></p>
-														<div>
-															<input type="text" id="bet2_2" name="bet2_2"  placeholder="請輸入下注金額">
-															<button class="contact100-form-btn" type="summit" name="betBtn" value="bet2_2">
-																組合二 下注
-															</button>
-														</div>
-													</form>
-												{% endifequal %}
+										{% ifequal personal_info.authority 0 %}
+											<article>
+												<a href="#" class="image"><img src="{% static 'main_page/images/first_combination.jpg' %}" alt="" /></a>
+												<div class="inner" id="first_comb">
 													
-											</div>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></a>
-											<div class="inner">
-												<h4>組合1</h4>
-												<p>---下注的按鈕---</p>
-											</div>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></a>
-											<div class="inner">
-												<h4>組合2</h4>
-												<p>---下注的按鈕---</p>
-											</div>
-										</article>
+														<h4 class="bet_title"> ＄組合一 </h4>
+														<p>------</p>
+														<form method="POST">
+															{% csrf_token %}
+
+															{% ifequal personal_info.bet 0 %}
+															<fieldset id="first_bet_field" disabled>
+																<input class="bet_amount" id="input_first" type="text" name="bet" placeholder="請輸入下注金額" oninput="checkInput(this)">
+																<button class="button button--winona" type="summit" name="bet_btn" value="first_bet">
+																	下注
+																</button>
+															</fieldset>
+															{% else %}
+																<input type="text" name="bet" placeholder="今日已下住，請明日再行下注" disabled>
+															{% endifequal %}
+
+
+														</form>
+														
+														
+												</div>
+											</article>
+											<article>
+												<a href="#" class="image"><img src="{% static 'main_page/images/second_combination.jpg' %}" alt="" /></a>
+												<div class="inner" id="second_comb">
+													
+														<h4 class="bet_title"> ＄組合二 </h4>
+														<p>------</p>
+														<form method="POST">
+															{% csrf_token %}
+															
+															{% ifequal personal_info.bet 0 %}
+															<fieldset id="second_bet_field" disabled>
+																<input class="bet_amount" type="text" name="bet" placeholder="請輸入下注金額" oninput="checkInput(this)">
+																<button class="button button--winona" type="summit" name="bet_btn" value="second_bet">
+																	下注
+																</button>
+															</fieldset>
+															{% else %}
+																<input type="text" name="bet" placeholder="今日已下住，請明日再行下注" disabled>
+															{% endifequal %}
+
+														</form>
+
+												</div>
+											</article>
+										{% else %}
+											<article>
+												<a href="#" class="image"><img src="{% static 'main_page/images/lottery.jpg' %}" alt="" /></a>
+												<div class="inner">
+													<h4>無權限下注</h4>
+													<p>---無權限下注---</p>
+												</div>
+											</article>
+										{% endifequal %}
 									</div>
 								</div>
 							</section>
@@ -599,6 +594,16 @@
 			            alert( '{{message}}' )
 			        {% endfor %}
 			    {% endif %}
+			    
+			    function checkInput( input ) {
+			    	if( parseInt( input.value ) < 2000 ) {
+			    		input.setCustomValidity('最低下注金額為2000元');
+			    	} else {
+			    		input.setCustomValidity('');
+			    	}
+			    }
+
+
 			</script>
 
 	</body>

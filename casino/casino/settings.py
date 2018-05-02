@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-SESSION_COOKIE_AGE = 5*60
+# SESSION_COOKIE_AGE = 5*60
 
 ROOT_URLCONF = 'casino.urls'
 

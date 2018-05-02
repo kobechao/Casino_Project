@@ -32,7 +32,7 @@
 
 
 	<div class="container-contact100">
-		<!-- <div class="contact100-map" id="google_map" data-map-x="25.033964" data-map-y="121.564472" data-pin="{% static 'manage_page/images/icons/map-marker.png' %}" data-scrollwhell="0" data-draggable="1"></div> -->
+		<div class="contact100-map" id="google_map" data-map-x="25.033964" data-map-y="121.564472" data-pin="{% static 'manage_page/images/icons/map-marker.png' %}" data-scrollwhell="0" data-draggable="1"></div>
 
 		<button class="contact100-btn-show">
 			<i class="fa fa-laptop" aria-hidden="true"></i>
@@ -141,13 +141,80 @@
 
 			</form>
 
+			<form method="POST" class="contact100-form validate-form">
+				{% csrf_token %}
+				
+
+					<span class="contact100-form-title">
+						查詢帳號資訊
+					</span>
+						<div class="wrap-input100 rs1-wrap-input100" data-validate="Name is required">
+							<span class="label-input100">帳號</span>
+							<input class="input100" type="text" name="phone" placeholder="請輸入帳號" required>
+							<span class="focus-input100"></span>
+						</div>
+
+						
+						<div class="container-contact100-form-btn">
+							
+
+							<button class="contact100-form-btn" name="authBtn" value="account_info" type="summit"  style="background-color: #21FF1E">
+								<span>
+									查詢
+									<i class="fa fa-check-circle m-l-7" aria-hidden="true"></i>
+								</span>
+							</button>
+						</div>
+
+					
+			</form>
+
+			<div>
+						{% if userInfoData %}
+						
+						<center>
+							<span class="contact100-form-btn">
+								Info 
+							</span>
+
+							<table class="info-table" cellpadding="5" rules="all" >
+								<tbody>
+									<tr>
+										<th class="info-title">Account</th>
+										<td class="info-cont">{{ userInfoData.account }}</td>
+									</tr>
+									<tr>
+										<th class="info-title">Certified</th>
+										<td class="info-cont">{{ userInfoData.certified }}</td>
+									</tr>
+									<tr>
+										<th class="info-title">Total Percentage</th>
+										<td class="info-cont">{{ userInfoData.totalPer }} %</td>
+									</tr>
+									<tr>
+										<th class="info-title">Money</th>
+										<td class="info-cont">{{ userInfoData.money }} $</td>
+									</tr>
+									<tr>
+										<th class="info-title">Total Money</th>
+										<td class="info-cont">{{ userInfoData.totalMoney }}</td>
+									</tr>
+								</tbody>
+							</table>
+						</center>
+
+						{% endif %}
+			</div>
+
+
+
 
 			<form method="POST" class="contact100-form validate-form">
 				{% csrf_token %}
 				
 
 					<span class="contact100-form-title">
-						查詢帳號紀錄
+						查詢帳號下注紀錄
 					</span>
 						<div class="wrap-input100 rs1-wrap-input100" data-validate="Name is required">
 							<span class="label-input100">帳號</span>
@@ -158,7 +225,7 @@
 						
 						<div class="container-contact100-form-btn">
 
-							<button class="contact100-form-btn" name="authBtn" value="search_one_btn" type="summit"  style="background-color: #21FF1E">
+							<button class="contact100-form-btn" name="authBtn" value="account_log" type="summit"  style="background-color: #21FF1E">
 								<span>
 									Search
 									<i class="fa fa-check-circle m-l-7" aria-hidden="true"></i>
@@ -167,6 +234,41 @@
 						</div>
 
 			</form>
+			{% if userBetDatas %}
+							<center>
+								<span class="contact100-form-btn">
+									Log 
+								</span>
+								{% for data in userBetDatas %}
+
+								<table class="info-table" cellpadding="5" rules="all" >
+									<tbody>
+										<tr>
+											<th class="info-title">Date</th>
+											<td class="info-cont">{{ data.date }}</td>
+										</tr>
+										<tr>
+											<th class="info-title">Account</th>
+											<td class="info-cont">{{ data.account }}</td>
+										</tr>
+										<tr>
+											<th class="info-title">Bet</th>
+											<td class="info-cont">{{ data.bet }} $</td>
+										</tr>
+										<tr>
+											<th class="info-title">下注類型</th>
+											<td class="info-cont">{{ data.number }}</td>
+										</tr>
+										<tr>
+											<th class="info-title">Duration Bet</th>
+											<td class="info-cont">{{ data.durationBet }}</td>
+										</tr>
+									</tbody>
+								</table>
+								{% endfor %}
+							</center>
+							
+						{% endif %}
 
 			<form method="POST" class="contact100-form validate-form">
 				{% csrf_token %}
